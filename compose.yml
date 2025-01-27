@@ -1,0 +1,16 @@
+services:
+  app:
+    build: .
+    volumes:
+      - .:/home/pptruser/
+      - ./public/images:/root/Downloads
+      - /home/pptruser/node_modules
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    init: true
+    cap_add:
+      - SYS_ADMIN
+    stdin_open: true
+    env_file:
+      - .env
+    command: bash
+    tty: true
