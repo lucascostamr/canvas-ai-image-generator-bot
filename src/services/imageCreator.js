@@ -5,12 +5,15 @@ import { sleep } from "../helpers/common.js";
 
 export async function imageCreator(page, prompt) {
   await setInput(page, prompt)
+  await sleep(15)
+  await page.waitForNetworkIdle();
+  await selectImage(page, prompt)
 }
 
 async function setInput(page, input) {
   await page
     .locator(
-      "::-p-aria([name='Choose from the list of example prompts or write your own'][role='searchbox'])"
+      "::-p-aria([name='Escolha um dos exemplos de comando da lista ou escreva o seu'][role='searchbox'])"
     )
     .click();
 
@@ -23,4 +26,12 @@ async function setInput(page, input) {
   await tab(page, 5)
 
   await page.keyboard.press("Enter", { delay: 100 });
+}
+
+async function selectImage(page, input) {
+  await page
+  .locator(
+    `::-p-aria([name='${input}'][role='button'])`
+  )
+  .click();
 }

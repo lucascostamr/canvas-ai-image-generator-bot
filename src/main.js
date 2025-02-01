@@ -3,6 +3,7 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 import { loginGoogle, loginCanvasWithGoogle } from "./services/login.js";
 import { imageCreator } from "./services/imageCreator.js";
+import { sleep } from "./helpers/common.js";
 
 const userAgent =
   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
@@ -26,13 +27,14 @@ const pages = await browser.pages();
 
 const currentPage = pages.shift();
 
-// await loginGoogle(currentPage);
+await loginGoogle(currentPage);
 
-// await currentPage.waitForNetworkIdle();
+await currentPage.waitForNetworkIdle();
 
-// await loginCanvasWithGoogle(currentPage, browser);
+await loginCanvasWithGoogle(currentPage, browser);
 
-// await currentPage.waitForNetworkIdle();
+await currentPage.waitForNetworkIdle();
 
-await currentPage.goto("https://www.canva.com/ai-image-generator/");
+await sleep(5)
+
 await imageCreator(currentPage, "Prompt");
