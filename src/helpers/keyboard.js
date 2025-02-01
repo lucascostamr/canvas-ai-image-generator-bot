@@ -9,3 +9,9 @@ export async function tab(page, times) {
     await page.keyboard.press("Tab");
   }
 }
+
+export async function selectAll(page) {
+  await page.keyboard.down("Control");
+  await page.keyboard.press("A");
+  await page.keyboard.up("Control");
+}
