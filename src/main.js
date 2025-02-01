@@ -35,4 +35,4 @@ const currentPage = pages.shift();
 // await currentPage.waitForNetworkIdle();
 
 await currentPage.goto("https://www.canva.com/ai-image-generator/");
-await imageCreator(currentPage);
+await imageCreator(currentPage, "Prompt");
