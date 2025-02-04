@@ -4,34 +4,25 @@ import { paste, selectAll, tab } from "../helpers/keyboard.js";
 import { sleep } from "../helpers/common.js";
 
 export async function imageCreator(page, prompt) {
-  await setInput(page, prompt)
-  await sleep(15)
-  await page.waitForNetworkIdle();
-  await selectImage(page, prompt)
-}
+  await page.goto(
+    "https://deepai.org/machine-learning-model/cyberpunk-generator"
+  );
 
-async function setInput(page, input) {
-  await page
-    .locator(
-      "::-p-aria([name='Escolha um dos exemplos de comando da lista ou escreva o seu'][role='searchbox'])"
-    )
-    .click();
+  const textarea = await page.$(".model-input-text-input.dynamic-border");
+  const downloadBtn = await page.$("#download-button");
+  await textarea.click();
 
-  await selectAll(page)
+  selectAll(page);
+  await page.keyboard.press("Backspace", { delay: 100 });
 
-  clipboard.writeSync(input);
-
-  await paste(page)
-
-  await tab(page, 5)
-
+  clipboard.writeSync(prompt);
+  await paste(page);
+  await tab(page, 2);
   await page.keyboard.press("Enter", { delay: 100 });
-}
+  await textarea.click();
+  await page.keyboard.press("Enter", { delay: 100 });
 
-async function selectImage(page, input) {
-  await page
-  .locator(
-    `::-p-aria([name='${input}'][role='button'])`
-  )
-  .click();
+  await sleep(8);
+
+  await downloadBtn.click();
 }
