@@ -1,9 +1,8 @@
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
-import { loginGoogle, loginCanvasWithGoogle } from "./services/login.js";
 import { imageCreator } from "./services/imageCreator.js";
-import { sleep } from "./helpers/common.js";
+import { readCardsFromCsv } from "./helpers/file.js";
 
 const userAgent =
   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
@@ -27,14 +26,6 @@ const pages = await browser.pages();
 
 const currentPage = pages.shift();
 
-await loginGoogle(currentPage);
+const cardsList = await readCardsFromCsv("public/cartas.csv");
 
-await currentPage.waitForNetworkIdle();
-
-await loginCanvasWithGoogle(currentPage, browser);
-
-await currentPage.waitForNetworkIdle();
-
-await sleep(5)
-
-await imageCreator(currentPage, "Prompt");
+await imageCreator(currentPage, cardsList);
