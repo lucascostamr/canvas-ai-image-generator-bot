@@ -2,6 +2,7 @@ import clipboard from "clipboardy";
 
 import { paste, selectAll, tab } from "../helpers/keyboard.js";
 import { sleep } from "../helpers/common.js";
+import { renameAndMoveFile } from "../helpers/file.js";
 
 export async function imageCreator(page, cardsList) {
   await page.goto("https://deepai.org/machine-learning-model/text2img");
@@ -30,9 +31,11 @@ export async function imageCreator(page, cardsList) {
 
       await downloadBtn.click();
 
-      break
+      await sleep(3);
+
+      renameAndMoveFile("public/images/new-images", "public/images/renamed-images", card.name, '.jpeg')
     } catch (error) {
-      console.log(card.name);
+      console.log(`\n\nERROR ON CARD ${card.name}`);
     }
   }
 }
